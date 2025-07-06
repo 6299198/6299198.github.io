@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1W小视频 - YouTube</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .video-container {
+            background-color: #000;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 比例 */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+        .play-button::after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 20px solid transparent;
+            border-left: 30px solid white;
+            border-bottom: 20px solid transparent;
+            margin-left: 5px;
+        }
+        .video-info {
+            margin-top: 20px;
+        }
+        .video-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .video-stats {
+            color: #606060;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .channel-info {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 1px solid #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .channel-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin-right: 15px;
+        }
+        .channel-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .subscribe-btn {
+            margin-left: auto;
+            background-color: #cc0000;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 2px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .video-description {
+            margin-top: 20px;
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="video-container">
+            <div class="video-placeholder" id="videoPlaceholder">
+                <div class="play-button" id="playButton"></div>
+            </div>
+            <audio id="audioPlayer" class="hidden"></audio>
+        </div>
+        
+        <div class="video-info">
+            <h1 class="video-title">致敬1W</h1>
+            <div class="video-stats">
+                <span>1,145,145,191 次观看</span> • <span>2023年10月15日</span>
+            </div>
+        </div>
+        
+        <div class="channel-info">
+            <div class="channel-icon"></div>
+            <div>
+                <div class="channel-name">N/A</div>
+                <div>8.24万位订阅者</div>
+            </div>
+            <button class="subscribe-btn">订阅</button>
+        </div>
+        
+        <div class="video-description">
+            致敬传奇1W大先生
+            <br><br>
+            不知道
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playButton = document.getElementById('playButton');
+        const videoPlaceholder = document.getElementById('videoPlaceholder');
+        
+        const audioUrls = [
+            'http://r-g.top/music/333D8610AA1130905201099CEEFCABAD.mp3',
+            'http://r-g.top/music/11F01189DE67752013B4DB95A4DF9E1E.mp3',
+            'http://r-g.top/music/54776386D43FABFBF072F1F1A17D9999.mp3'
+        ];
+        
+        let currentAudioIndex = 0;
+        
+        playButton.addEventListener('click', function() {
+            if (currentAudioIndex < audioUrls.length) {
+                audioPlayer.src = audioUrls[currentAudioIndex];
+                audioPlayer.play();
+                
+                // 播放按钮样式
+                playButton.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+                playButton.innerHTML = '▶';
+                
+                currentAudioIndex++;
+                
+                // 标题和描述
+                if (currentAudioIndex === audioUrls.length) {
+                    document.querySelector('.video-title').textContent = '你好';
+                    document.querySelector('.video-description').textContent = '不知道';
+                }
+            } else {
+                // 播放完所有音频后重新开始
+                currentAudioIndex = 0;
+                playButton.click();
+            }
+        });
+        
+        // 当音频结束时恢复播放按钮
+        audioPlayer.addEventListener('ended', function() {
+            playButton.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            playButton.innerHTML = '';
+            playButton.appendChild(document.createElement('div')).className = 'play-button';
+        });
+    </script>
+</body>
+</html>
